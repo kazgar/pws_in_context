@@ -9,6 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
+# Graphs
+graphs
+
 # Data
 data
 
