@@ -17,3 +17,9 @@ data
 
 # PyCharm
 .idea
+
+# Slurm
+slurm.*
+
+# .sh 
+*.sh
