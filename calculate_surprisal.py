@@ -118,8 +118,12 @@ def calculate_surprisal(context: str, target: str, tokenizer: AutoTokenizer):
     P_context = dp_prob(context, lattice_context, pruned_tokens, tok_to_id)
     P_sentence = dp_prob(sentence, lattice_sentence, pruned_tokens, tok_to_id)
 
-    P_cond = P_sentence / P_context
-    surprisal = -math.log(P_cond)
+    try:
+        P_cond = P_sentence / P_context
+    	surprisal = -math.log(P_cond)
+    except:
+	surprisal = None
+
     return surprisal
 
 
