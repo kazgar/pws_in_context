@@ -120,9 +120,13 @@ def calculate_surprisal(context: str, target: str, tokenizer: AutoTokenizer):
 
     try:
         P_cond = P_sentence / P_context
-    	surprisal = -math.log(P_cond)
-    except:
-	surprisal = None
+        surprisal = -math.log(P_cond)
+    except ZeroDivisionError:
+        surprisal = None
+        print(f"Target: {target}")
+        print(f"Context: {context}")
+        print(f"P_context: {P_context}")
+        print(f"P_sentence: {P_sentence}")
 
     return surprisal
 
