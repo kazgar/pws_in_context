@@ -2,11 +2,10 @@ import math
 
 import pandas as pd
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers.tokenization_utils_fast import PreTrainedTokenizerBase
 
-from predictors.constants import DATA_PATH
-from predictors.load_model import load_llm
+from pws_in_context.constants import DATA_PATH, device
+from pws_in_context.load_model import load_llm
 
 prob_cache = {}
 
@@ -89,7 +88,9 @@ def dp_prob(
     for i in range(1, n + 1):
         for j, tok in lattice[i]:
             prefix = s[:j]
-            p = get_probs(prefix, pruned_tokens, tok_to_id)[tok]
+            p = get_probs(prefix, pruned_tokens, tok_to_id, tokenizer, model, device, prob_cache)[
+                tok
+            ]
             contrib = dp[j] * p
             dp[i] += contrib
 
@@ -110,6 +111,7 @@ def calculate_surprisal(
     prob_cache: dict[str, dict[str, float]] = {}
 
     sentence = f"{context} {target}"
+
     substring_set = all_substrings(sentence)
 
     id2token = [tokenizer.convert_ids_to_tokens(i) for i in range(tokenizer.vocab_size)]
@@ -181,7 +183,7 @@ def calculate_surprisal(
 
 
 def main():
-    target_sent_matching_df = pd.read_csv(DATA_PATH / "target_sent_matching.csv")
+    target_sent_matching_df = pd.read_csv(DATA_PATH / "target_sent_combinations.csv")
 
     model, tokenizer, whitespace_char = load_llm(model_key="Llama")
 
@@ -189,9 +191,9 @@ def main():
     surprisal_post_target_list = []
 
     for context, target, post_target in zip(
-        target_sent_matching_df["context"].tolist(),
-        target_sent_matching_df["target"].tolist(),
-        target_sent_matching_df["post_target"].tolist(),
+        target_sent_matching_df["context"].tolist()[:10],
+        target_sent_matching_df["target"].tolist()[:10],
+        target_sent_matching_df["post_target"].tolist()[:10],
     ):
         target_surprisal, post_target_surprisal = calculate_surprisal(
             context=context,
@@ -201,14 +203,17 @@ def main():
             whitespace_char=whitespace_char,
             post_target=post_target,
             calc_post=True,
+            device=device,
         )
         surprisal_target_list.append(target_surprisal)
         surprisal_post_target_list.append(post_target_surprisal)
 
-    target_sent_matching_df["target_surprisal"] = surprisal_target_list
-    target_sent_matching_df["post_target_surprisal"] = surprisal_post_target_list
-
-    target_sent_matching_df.to_csv(DATA_PATH / "target_sent_surprisals.csv", index=False)
+    print(surprisal_target_list)
+    print(surprisal_post_target_list)
+    # target_sent_matching_df["target_surprisal"] = surprisal_target_list
+    # target_sent_matching_df["post_target_surprisal"] = surprisal_post_target_list
+    #
+    # target_sent_matching_df.to_csv(DATA_PATH / "target_sent_surprisals.csv", index=False)
 
 
 if __name__ == "__main__":
