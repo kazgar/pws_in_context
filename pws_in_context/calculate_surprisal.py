@@ -11,8 +11,6 @@ from pws_in_context.utils import (
     token_string,
 )
 
-prob_cache = {}
-
 
 def main():
     target_sent_matching_df = pd.read_csv(DATA_PATH / "target_sent_combinations.csv")
