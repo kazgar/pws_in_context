@@ -23,3 +23,6 @@ slurm.*
 
 # .sh 
 *.sh
+
+# .bp
+*.bp
