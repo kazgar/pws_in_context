@@ -13,8 +13,6 @@ models = {
     "bloom-1b7": "bigscience/bloom-1b7",  # 2B parameters | 48 languages
     "opt-125m": "facebook/opt-125m",  # 125M parameters | English
     "opt-1.3b": "facebook/opt-1.3b",  # 1.3B parameters | English
-    "falcon-7b": "tiiuae/falcon-7b",  # 7B parameters | English
-    "falcon-40b": "tiiuae/falcon-40b",  # 42B parameters | 4 languages
     "pythia-70m": "EleutherAI/pythia-70m",  # 96M parameters | English
     "pythia-1.4b": "EleutherAI/pythia-1.4b",  # 2B parameters | English
     "pythia-6.9b": "EleutherAI/pythia-6.9b",  # 7B parameters | English
