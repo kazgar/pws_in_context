@@ -48,7 +48,10 @@ def get_probs(
     if prefix in prob_cache:
         return prob_cache[prefix]
 
-    ids = tokenizer(prefix, return_tensors="pt").input_ids.to(device)
+    if prefix == "":
+        ids = torch.tensor([[tokenizer.bos_token_id]], device=device)
+    else:
+        ids = tokenizer(prefix, return_tensors="pt").input_ids.to(device)
 
     with torch.no_grad():
         logits = model(ids).logits[0, -1]
@@ -109,7 +112,9 @@ def calculate_surprisal(
     substring_set = all_substrings(sentence)
 
     id2token = [tokenizer.convert_ids_to_tokens(i) for i in range(tokenizer.vocab_size)]
+    print(id2token)
     token_strings = [token_string(tok, whitespace_char) for tok in id2token]
+    print(token_strings)
 
     pruned_tokens = []
     pruned_token_ids = []

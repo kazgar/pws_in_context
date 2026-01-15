@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 
 from pws_in_context.constants import DATA_PATH, device
@@ -13,9 +15,19 @@ from pws_in_context.utils import (
 
 
 def main():
+    if len(sys.argv) < 2:
+        raise Warning(
+            "No model name provided, usage: python -m pws_in_context.calculate_surprisal <model name>"
+        )
+    model_name = sys.argv[1]
+
+    print(f"Model name: {model_name}.")
+
     target_sent_matching_df = pd.read_csv(DATA_PATH / "target_sent_combinations.csv")
 
-    model, tokenizer, whitespace_char = load_llm(model_key="Llama")
+    model, tokenizer, whitespace_char = load_llm(model_key=model_name)
+
+    print("Succesfully loaded model, tokenizer and whitespace character set.")
 
     surprisal_target_list = []
     surprisal_post_target_list = []
@@ -41,7 +53,9 @@ def main():
     target_sent_matching_df["target_surprisal"] = surprisal_target_list
     target_sent_matching_df["post_target_surprisal"] = surprisal_post_target_list
 
-    target_sent_matching_df.to_csv(DATA_PATH / "target_sent_surprisals.csv", index=False)
+    target_sent_matching_df.to_csv(
+        DATA_PATH / f"{model_name}_target_sent_surprisals.csv", index=False
+    )
 
 
 if __name__ == "__main__":
