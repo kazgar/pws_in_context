@@ -20,19 +20,7 @@ models = {
     "pythia-6.9b": "EleutherAI/pythia-6.9b",  # 7B parameters | English
 }
 
-_whitespace = {
-    "Llama-3.2-1B": "Ġ",
-    "gpt2": "Ġ",
-    "bloom-1b1": "Ġ",
-    "bloom-1b7": "Ġ",
-    "opt-125m": "Ġ",
-    "opt-1.3b": "Ġ",
-    "falcon-7b": "Ġ",  # TODO
-    "falcon-40b": "Ġ",  # TODO
-    "pythia-70m": "Ġ",
-    "pythia-1.4b": "Ġ",
-    "pythia-6.9b": "Ġ",
-}
+_whitespace = "Ġ"
 
 
 def load_llm(model_key: str = "Llama") -> tuple[nn.Module, PreTrainedTokenizerBase, str]:
@@ -52,7 +40,7 @@ def load_llm(model_key: str = "Llama") -> tuple[nn.Module, PreTrainedTokenizerBa
         raise Exception(f"Model not supported: {model_key}")
 
     model_name = models[model_key]
-    whitespace = _whitespace[model_key]
+    whitespace = _whitespace
 
     device = (
         torch.device("cuda")
