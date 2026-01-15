@@ -27,8 +27,8 @@ _whitespace = {
     "bloom-1b7": "Ġ",
     "opt-125m": "Ġ",
     "opt-1.3b": "Ġ",
-    "falcon-7b": None,  # TODO
-    "falcon-40b": None,  # TODO
+    "falcon-7b": "Ġ",  # TODO
+    "falcon-40b": "Ġ",  # TODO
     "pythia-70m": "Ġ",
     "pythia-1.4b": "Ġ",
     "pythia-6.9b": "Ġ",
