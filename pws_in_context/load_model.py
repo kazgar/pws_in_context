@@ -24,7 +24,7 @@ models = {
 _whitespace = "Ġ"
 
 
-def load_llm(model_key: str = "Llama") -> tuple[nn.Module, PreTrainedTokenizerBase, str]:
+def load_llm(model_key: str = "Llama-3.2-1B") -> tuple[nn.Module, PreTrainedTokenizerBase, str]:
     """Load a language model, tokenizer, and the model-specific whitespace character.
 
     Args:
