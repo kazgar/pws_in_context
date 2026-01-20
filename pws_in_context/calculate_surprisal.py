@@ -1,3 +1,4 @@
+import os
 import sys
 
 import pandas as pd
@@ -53,8 +54,12 @@ def main():
     target_sent_matching_df["target_surprisal"] = surprisal_target_list
     target_sent_matching_df["post_target_surprisal"] = surprisal_post_target_list
 
+    if not os.path.exists(DATA_PATH / "target_sent_surprisal_data"):
+        os.makedirs(DATA_PATH / "target_sent_surprisal_data", exist_ok=True)
+
     target_sent_matching_df.to_csv(
-        DATA_PATH / f"{model_name}_target_sent_surprisals.csv", index=False
+        DATA_PATH / "target_sent_surprisal_data" / f"{model_name}_target_sent_surprisals.csv",
+        index=False,
     )
 
 
